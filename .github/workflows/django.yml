@@ -36,10 +36,13 @@ jobs:
     - name: Run flake8
       run: |
         flake8 edc_base_test
-    - name: Coverage 
+        python manage.py check
+    - name: Run Tests
       run: |
-        coverage run manage.py test
-        coverage report -m
+          coverage run --source=edc_base_test manage.py test
+          coverage xml -i
+      env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
     - name: Upload to Coveralls
       uses: coverallsapp/github-action@v2
       with:
